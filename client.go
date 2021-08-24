@@ -20,6 +20,7 @@ func NewClient(proxyURL string) *Client {
 		MaxConnsPerHost:     0,
 		MaxIdleConnsPerHost: 100,
 		headersOrder:        &headersOrder,
+		roundTripper:        http.DefaultTransport,
 	}
 
 	if len(proxyURL) > 0 {
