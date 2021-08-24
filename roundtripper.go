@@ -21,8 +21,8 @@ func (t *transport) RoundTrip(r *http.Request) (*http.Response, error) {
 	bs, _ := json.Marshal(r.Header)
 	fmt.Println("[ROUND TRIPPER]", string(bs))
 
-	if r.Header != nil {
-		var newHeaders http.Header
+	if len(r.Header) > 0 {
+		newHeaders := make(http.Header)
 
 		// add headers within order with priority
 		for _, header := range *t.headersOrder {
