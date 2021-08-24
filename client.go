@@ -13,7 +13,7 @@ type Client struct {
 }
 
 func NewClient(proxyURL string) *Client {
-	var headersOrder []string
+	headersOrder := []string{""}
 
 	transport := &transport{
 		MaxIdleConns:        0,

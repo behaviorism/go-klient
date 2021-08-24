@@ -24,10 +24,17 @@ func (t *transport) RoundTrip(r *http.Request) (*http.Response, error) {
 	if r.Header != nil {
 		var newHeaders http.Header
 
+		// add headers within order with priority
 		for _, header := range *t.headersOrder {
 			if value, ok := r.Header[header]; ok {
 				newHeaders[header] = value
+				r.Header.Del(header)
 			}
+		}
+
+		// merge remaining headers
+		for header, value := range r.Header {
+			newHeaders[header] = value
 		}
 
 		r.Header = newHeaders
