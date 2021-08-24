@@ -18,9 +18,6 @@ type transport struct {
 }
 
 func (t *transport) RoundTrip(r *http.Request) (*http.Response, error) {
-	bs, _ := json.Marshal(r.Header)
-	fmt.Println("[ROUND TRIPPER]", string(bs))
-
 	if len(r.Header) > 0 {
 		newHeaders := make(http.Header)
 
@@ -36,6 +33,10 @@ func (t *transport) RoundTrip(r *http.Request) (*http.Response, error) {
 		for header, value := range r.Header {
 			newHeaders[header] = value
 		}
+
+		bs, _ := json.Marshal(newHeaders)
+
+		fmt.Println("New headers", bs)
 
 		r.Header = newHeaders
 	}
