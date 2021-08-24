@@ -43,6 +43,7 @@ func (c *Client) SetHeadersOrder(headersList []string) {
 func (c *Client) NewRequest() *Request {
 	return &Request{
 		client: c,
+		header: make(http.Header),
 	}
 }
 
