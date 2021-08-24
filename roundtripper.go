@@ -1,7 +1,6 @@
 package klient
 
 import (
-	"encoding/json"
 	"fmt"
 	"net/http"
 	"net/url"
@@ -24,8 +23,8 @@ func (t *transport) RoundTrip(r *http.Request) (*http.Response, error) {
 		// add headers within order with priority
 		for _, header := range *t.headersOrder {
 			if value, ok := r.Header[header]; ok {
-				fmt.Println("Header", header)
 				newHeaders[header] = value
+				fmt.Println("Header", newHeaders)
 				r.Header.Del(header)
 			}
 		}
@@ -34,10 +33,6 @@ func (t *transport) RoundTrip(r *http.Request) (*http.Response, error) {
 		for header, value := range r.Header {
 			newHeaders[header] = value
 		}
-
-		bs, _ := json.Marshal(newHeaders)
-
-		fmt.Println("New headers", string(bs))
 
 		r.Header = newHeaders
 	}
