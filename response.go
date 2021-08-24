@@ -7,11 +7,15 @@ import (
 
 type Response struct {
 	Headers    http.Header
-	Body       []byte
+	body       []byte
 	Status     string
 	StatusCode int
 }
 
 func (r *Response) JSON(data interface{}) error {
-	return json.Unmarshal(r.Body, data)
+	return json.Unmarshal(r.body, data)
+}
+
+func (r *Response) Body() []byte {
+	return r.body
 }
