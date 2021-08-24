@@ -18,6 +18,8 @@ type transport struct {
 }
 
 func (t *transport) RoundTrip(r *http.Request) (*http.Response, error) {
+	fmt.Println("Headers order", t.headersOrder)
+
 	if len(r.Header) > 0 {
 		newHeaders := make(http.Header)
 
