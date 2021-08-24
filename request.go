@@ -3,6 +3,7 @@ package klient
 import (
 	"bytes"
 	"encoding/json"
+	"errors"
 	"io"
 	"net/http"
 	"net/url"
@@ -52,7 +53,15 @@ func (r *Request) SetHost(value string) *Request {
 	return r
 }
 
-func (r *Request) SetJSON(body interface{}) *Request {
+func (r *Request) SetBodyString(body string) *Request {
+	if r.err == nil {
+		r.body = bytes.NewBufferString(body)
+	}
+
+	return r
+}
+
+func (r *Request) SetBodyJSON(body interface{}) *Request {
 	b, err := json.Marshal(body)
 
 	if err != nil {
@@ -65,9 +74,11 @@ func (r *Request) SetJSON(body interface{}) *Request {
 	return r
 }
 
-func (r *Request) SetForm(body url.Values) *Request {
-	r.body = strings.NewReader(body.Encode())
-	r.header["content-type"] = []string{"application/x-www-form-urlencoded"}
+func (r *Request) SetBodyForm(body url.Values) *Request {
+	if r.err == nil {
+		r.body = strings.NewReader(body.Encode())
+		r.header["content-type"] = []string{"application/x-www-form-urlencoded"}
+	}
 
 	return r
 }
@@ -75,6 +86,14 @@ func (r *Request) SetForm(body url.Values) *Request {
 func (r *Request) Do() (*Response, error) {
 	if r.err != nil {
 		return nil, r.err
+	}
+
+	if len(r.url) == 0 {
+		return nil, errors.New("URL is missing")
+	}
+
+	if len(r.method) == 0 {
+		r.method = "GET"
 	}
 
 	req, err := http.NewRequest(r.method, r.url, r.body)

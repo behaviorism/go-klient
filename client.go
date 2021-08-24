@@ -68,9 +68,9 @@ func (c *Client) Do(r *http.Request) (*Response, error) {
 		return nil, err
 	}
 
-	defer resp.Body.Close()
-
 	body, err := ioutil.ReadAll(resp.Body)
+
+	_ = resp.Body.Close()
 
 	if err != nil {
 		return nil, err
