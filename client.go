@@ -8,12 +8,18 @@ import (
 )
 
 type Client struct {
-	client *http.Client
+	client       *http.Client
+	headersOrder *[]string
 }
 
 func NewClient(proxyURL string) *Client {
-	transport := &http.Transport{
-		ForceAttemptHTTP2: true,
+	var headersOrder []string
+
+	transport := &transport{
+		MaxIdleConns:        0,
+		MaxConnsPerHost:     0,
+		MaxIdleConnsPerHost: 100,
+		headersOrder:        &headersOrder,
 	}
 
 	if len(proxyURL) > 0 {
@@ -26,7 +32,12 @@ func NewClient(proxyURL string) *Client {
 		client: &http.Client{
 			Transport: transport,
 		},
+		headersOrder: &headersOrder,
 	}
+}
+
+func (c *Client) SetHeadersOrder(headersList []string) {
+	*c.headersOrder = headersList
 }
 
 func (c *Client) NewRequest() *Request {
