@@ -36,7 +36,7 @@ func (t *transport) RoundTrip(r *http.Request) (*http.Response, error) {
 
 		bs, _ := json.Marshal(newHeaders)
 
-		fmt.Println("New headers", bs)
+		fmt.Println("New headers", string(bs))
 
 		r.Header = newHeaders
 	}
