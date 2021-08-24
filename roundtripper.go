@@ -1,6 +1,7 @@
 package klient
 
 import (
+	"encoding/json"
 	"fmt"
 	"net/http"
 	"net/url"
@@ -17,7 +18,8 @@ type transport struct {
 }
 
 func (t *transport) RoundTrip(r *http.Request) (*http.Response, error) {
-	fmt.Println(r.Header)
+	bs, _ := json.Marshal(r.Header)
+	fmt.Println("[ROUND TRIPPER]", string(bs))
 
 	if r.Header != nil {
 		var newHeaders http.Header
