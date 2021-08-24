@@ -78,7 +78,7 @@ func (c *Client) Do(r *http.Request) (*Response, error) {
 
 	response := &Response{
 		Headers:    resp.Header,
-		Body:       body,
+		body:       body,
 		Status:     resp.Status,
 		StatusCode: resp.StatusCode,
 	}
