@@ -5,40 +5,28 @@ import (
 	"io/ioutil"
 	"net/http"
 	"net/url"
+
+	"golang.org/x/net/proxy"
 )
 
 type Client struct {
-	client       *http.Client
-	headersOrder *[]string
+	client *http.Client
 }
 
-func NewClient(proxyURL string) *Client {
-	headersOrder := []string{}
-
-	transport := &transport{
-		MaxIdleConns:        0,
-		MaxConnsPerHost:     0,
-		MaxIdleConnsPerHost: 100,
-		headersOrder:        &headersOrder,
-		roundTripper:        http.DefaultTransport,
-	}
-
+func NewClient(browser browser, proxyURL string) *Client {
 	if len(proxyURL) > 0 {
-		proxyUrl, _ := url.Parse(proxyURL)
+		dialer, _ := newConnectDialer(proxyURL)
 
-		transport.Proxy = http.ProxyURL(proxyUrl)
+		return &Client{
+			client: &http.Client{Transport: newRoundTripper(browser, dialer)},
+		}
 	}
 
 	return &Client{
 		client: &http.Client{
-			Transport: transport,
+			Transport: newRoundTripper(browser, proxy.Direct),
 		},
-		headersOrder: &headersOrder,
 	}
-}
-
-func (c *Client) SetHeadersOrder(headersList []string) {
-	*c.headersOrder = headersList
 }
 
 func (c *Client) NewRequest() *Request {
