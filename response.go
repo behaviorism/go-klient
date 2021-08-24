@@ -12,6 +12,6 @@ type Response struct {
 	StatusCode int
 }
 
-func (r *Response) json(data interface{}) error {
+func (r *Response) JSON(data interface{}) error {
 	return json.Unmarshal(r.Body, data)
 }

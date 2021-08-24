@@ -59,6 +59,7 @@ func (r *Request) SetJSON(body interface{}) *Request {
 		r.err = err
 	} else {
 		r.body = bytes.NewBuffer(b)
+		r.header["content-type"] = []string{"application/json"}
 	}
 
 	return r
