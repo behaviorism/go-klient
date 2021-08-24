@@ -18,7 +18,7 @@ import (
 	utls "github.com/refraction-networking/utls"
 )
 
-type browser struct {
+type Browser struct {
 	JA3       string
 	UserAgent string
 }
@@ -152,7 +152,7 @@ func (rt *roundTripper) getDialTLSAddr(req *http.Request) string {
 	return net.JoinHostPort(req.URL.Host, "443") // we can assume port is 443 at this point
 }
 
-func newRoundTripper(browser browser, dialer ...proxy.ContextDialer) http.RoundTripper {
+func newRoundTripper(browser Browser, dialer ...proxy.ContextDialer) http.RoundTripper {
 	if len(dialer) > 0 {
 		return &roundTripper{
 			dialer:            dialer[0],

@@ -13,7 +13,7 @@ type Client struct {
 	client *http.Client
 }
 
-func NewClient(browser browser, proxyURL string) *Client {
+func NewClient(browser Browser, proxyURL string) *Client {
 	if len(proxyURL) > 0 {
 		dialer, _ := newConnectDialer(proxyURL)
 
