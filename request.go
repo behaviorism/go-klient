@@ -65,8 +65,9 @@ func (r *Request) SetJSON(body interface{}) *Request {
 	return r
 }
 
-func (r *Request) SetFormBody(body url.Values) *Request {
+func (r *Request) SetForm(body url.Values) *Request {
 	r.body = strings.NewReader(body.Encode())
+	r.header["content-type"] = []string{"application/x-www-form-urlencoded"}
 
 	return r
 }
