@@ -5,10 +5,17 @@ import (
 	"io/ioutil"
 	"net/http"
 	"net/url"
+
+	"golang.org/x/net/proxy"
 )
 
 type Client struct {
 	client *http.Client
+}
+
+type Browser struct {
+	JA3       string
+	UserAgent string
 }
 
 func NewClient(browser Browser, proxyURL string) *Client {
@@ -22,7 +29,7 @@ func NewClient(browser Browser, proxyURL string) *Client {
 
 	return &Client{
 		client: &http.Client{
-			// Transport: newRoundTripper(browser, proxy.Direct),
+			Transport: newRoundTripper(browser, proxy.Direct),
 		},
 	}
 }
