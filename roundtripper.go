@@ -9,13 +9,13 @@ import (
 
 	// "log"
 	"net"
+	"net/http"
 	"strconv"
 	"strings"
 	"sync"
 
-	http "github.com/useflyent/fhttp"
+	"golang.org/x/net/http2"
 
-	"github.com/useflyent/fhttp/http2"
 	"golang.org/x/net/proxy"
 
 	utls "github.com/refraction-networking/utls"
@@ -124,16 +124,7 @@ func (rt *roundTripper) dialTLS(ctx context.Context, network, addr string) (net.
 	switch conn.ConnectionState().NegotiatedProtocol {
 	case http2.NextProtoTLS:
 		// The remote peer is speaking HTTP 2 + TLS.
-		t2 := http2.Transport{DialTLS: rt.dialTLSHTTP2}
-		t2.Settings = []http2.Setting{
-			{ID: http2.SettingMaxConcurrentStreams, Val: 1000},
-			{ID: http2.SettingMaxFrameSize, Val: 16384},
-			{ID: http2.SettingMaxHeaderListSize, Val: 262144},
-		}
-		t2.InitialWindowSize = 6291456
-		t2.HeaderTableSize = 65536
-		t2.PushHandler = &http2.DefaultPushHandler{}
-		rt.cachedTransports[addr] = &t2
+		rt.cachedTransports[addr] = &http2.Transport{DialTLS: rt.dialTLSHTTP2}
 	default:
 		// Assume the remote peer is speaking HTTP 1.x + TLS.
 		rt.cachedTransports[addr] = &http.Transport{DialTLSContext: rt.dialTLS}

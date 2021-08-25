@@ -5,7 +5,8 @@ import (
 	"io/ioutil"
 	"net/url"
 
-	http "github.com/useflyent/fhttp"
+	"net/http"
+
 	"golang.org/x/net/proxy"
 )
 
