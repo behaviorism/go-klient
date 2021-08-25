@@ -8,14 +8,15 @@ import (
 	"errors"
 	"io"
 	"net"
-	"net/http"
 	"net/url"
 	"strconv"
 	"sync"
 
+	http "github.com/useflyent/fhttp"
+
 	"golang.org/x/net/proxy"
 
-	"golang.org/x/net/http2"
+	"github.com/useflyent/fhttp/http2"
 )
 
 // connectDialer allows to configure one-time use HTTP CONNECT client

@@ -3,9 +3,9 @@ package klient
 import (
 	"errors"
 	"io/ioutil"
-	"net/http"
 	"net/url"
 
+	http "github.com/useflyent/fhttp"
 	"golang.org/x/net/proxy"
 )
 
