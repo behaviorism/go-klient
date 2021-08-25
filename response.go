@@ -2,7 +2,8 @@ package klient
 
 import (
 	"encoding/json"
-	"net/http"
+
+	http "github.com/useflyent/fhttp"
 )
 
 type Response struct {

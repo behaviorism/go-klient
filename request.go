@@ -5,9 +5,10 @@ import (
 	"encoding/json"
 	"errors"
 	"io"
-	"net/http"
 	"net/url"
 	"strings"
+
+	http "github.com/useflyent/fhttp"
 )
 
 type Request struct {
