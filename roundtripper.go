@@ -4,6 +4,7 @@ import (
 	"context"
 	"crypto/sha256"
 	"crypto/tls"
+	"encoding/json"
 	"errors"
 	"fmt"
 
@@ -100,6 +101,10 @@ func (rt *roundTripper) dialTLS(ctx context.Context, network, addr string) (net.
 	if err != nil {
 		return nil, err
 	}
+
+	str, _ := json.Marshal(spec)
+
+	fmt.Println(string(str))
 
 	conn := utls.UClient(rawConn, &utls.Config{ServerName: host, MinVersion: tls.VersionTLS12, MaxVersion: tls.VersionTLS12},
 		utls.HelloCustom)
@@ -239,8 +244,8 @@ func stringToSpec(ja3 string) (*utls.ClientHelloSpec, error) {
 	}
 	_ = vid
 	return &utls.ClientHelloSpec{
-		// TLSVersMin:         vid,
-		// TLSVersMax:         vid,
+		TLSVersMin:         vid,
+		TLSVersMax:         vid,
 		CipherSuites:       suites,
 		CompressionMethods: []byte{0},
 		Extensions:         exts,
