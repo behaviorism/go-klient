@@ -101,8 +101,6 @@ func (rt *roundTripper) dialTLS(ctx context.Context, network, addr string) (net.
 		return nil, err
 	}
 
-	fmt.Println(spec)
-
 	conn := utls.UClient(rawConn, &utls.Config{ServerName: host},
 		utls.HelloCustom)
 
@@ -262,15 +260,12 @@ func genMap() (extMap map[string]utls.TLSExtension) {
 			SupportedSignatureAlgorithms: []utls.SignatureScheme{
 				utls.ECDSAWithP256AndSHA256,
 				utls.ECDSAWithP384AndSHA384,
-				utls.ECDSAWithP521AndSHA512,
 				utls.PSSWithSHA256,
 				utls.PSSWithSHA384,
 				utls.PSSWithSHA512,
 				utls.PKCS1WithSHA256,
 				utls.PKCS1WithSHA384,
 				utls.PKCS1WithSHA512,
-				utls.ECDSAWithSHA1,
-				utls.PKCS1WithSHA1,
 			},
 		},
 		"16": &utls.ALPNExtension{
