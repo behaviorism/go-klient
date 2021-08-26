@@ -101,8 +101,7 @@ func (rt *roundTripper) dialTLS(ctx context.Context, network, addr string) (net.
 		return nil, err
 	}
 
-	conn := utls.UClient(rawConn, &utls.Config{ServerName: host}, // MinVersion:         tls.VersionTLS10,
-		// MaxVersion:         tls.VersionTLS12, // Default is TLS13
+	conn := utls.UClient(rawConn, &utls.Config{ServerName: host, MinVersion: tls.VersionTLS12, MaxVersion: tls.VersionTLS12},
 		utls.HelloCustom)
 	if err := conn.ApplyPreset(spec); err != nil {
 		return nil, err
@@ -238,10 +237,10 @@ func stringToSpec(ja3 string) (*utls.ClientHelloSpec, error) {
 		}
 		suites = append(suites, uint16(cid))
 	}
-
+	_ = vid
 	return &utls.ClientHelloSpec{
-		TLSVersMin:         vid,
-		TLSVersMax:         vid,
+		// TLSVersMin:         vid,
+		// TLSVersMax:         vid,
 		CipherSuites:       suites,
 		CompressionMethods: []byte{0},
 		Extensions:         exts,
