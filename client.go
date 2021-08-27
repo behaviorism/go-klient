@@ -19,20 +19,24 @@ type Browser struct {
 	UserAgent string
 }
 
-func NewClient(browser Browser, proxyURL string) *Client {
+func NewClient(browser Browser, proxyURL string) (*Client, error) {
 	if len(proxyURL) > 0 {
-		dialer, _ := newConnectDialer(proxyURL)
+		dialer, err := newConnectDialer(proxyURL)
+
+		if err != nil {
+			return nil, err
+		}
 
 		return &Client{
 			client: &http.Client{Transport: newRoundTripper(browser, dialer)},
-		}
+		}, nil
 	}
 
 	return &Client{
 		client: &http.Client{
 			Transport: newRoundTripper(browser, proxy.Direct),
 		},
-	}
+	}, nil
 }
 
 func (c *Client) NewRequest() *Request {
