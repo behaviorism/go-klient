@@ -19,6 +19,15 @@ type Browser struct {
 	UserAgent string
 }
 
+var defaultClient, _ = NewClient(Browser{JA3: "771,255-49195-49199-49196-49200-49171-49172-156-157-47-53,0-10-11-13,23-24,0", UserAgent: "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/92.0.4515.159 Safari/537.36"}, "")
+
+func NewRequest() *Request {
+	return &Request{
+		client: defaultClient,
+		header: make(http.Header),
+	}
+}
+
 func NewClient(browser Browser, proxyURL string) (*Client, error) {
 	if len(proxyURL) > 0 {
 		dialer, err := newConnectDialer(proxyURL)
